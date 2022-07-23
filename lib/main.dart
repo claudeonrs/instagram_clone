@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/responsive/responsive_layout_screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
@@ -6,7 +7,19 @@ import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  if (kIsWeb) {
+    // if web platform
+    await Firebase.initializeApp(
+        options: const FirebaseOptions(
+      apiKey: "AIzaSyDyZi6tkACV6G5kSk5gGrCHjZaUDv3Xuno",
+      appId: "1:314231666416:web:fb7fa1d0605f4d56bb3435",
+      messagingSenderId: "314231666416",
+      projectId: "instagram-clone-421d4",
+      storageBucket: "instagram-clone-421d4.appspot.com",
+    ));
+  } else {
+    await Firebase.initializeApp(); // if mobile platform
+  }
   runApp(const MyApp());
 }
 
