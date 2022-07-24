@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class TextFieldInput extends StatelessWidget {
-  final TextEditingController textEditingController;
+  final TextEditingController
+      textEditingController; // listens to user input and updates in real-time
   final bool isPassword;
   final String hintText;
   final TextInputType textInputType;
