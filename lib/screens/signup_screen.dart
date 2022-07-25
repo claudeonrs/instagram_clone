@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/resources/auth_methods.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:instagram_clone/widgets/text_field_input.dart';
@@ -69,7 +70,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ],
               ),
               const SizedBox(height: 24),
-              // textfield input for username
+              //* textfield input for username
               TextFieldInput(
                   textEditingController: _usernameController,
                   hintText: "Enter username",
@@ -77,7 +78,7 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(
                 height: 24,
               ),
-              // textfield input for email
+              //* textfield input for email
               TextFieldInput(
                   textEditingController: _emailController,
                   hintText: "Enter email address",
@@ -85,7 +86,7 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(
                 height: 24,
               ),
-              // textfield input for password
+              //* textfield input for password
               TextFieldInput(
                 textEditingController: _passwordController,
                 hintText: "Enter password",
@@ -95,7 +96,7 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(
                 height: 24,
               ),
-              // textfield input for bio
+              //* textfield input for bio
               TextFieldInput(
                   textEditingController: _bioController,
                   hintText: "Enter bio",
@@ -103,53 +104,58 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(
                 height: 24,
               ),
-              // button login
-              InkWell(
-                child: Container(
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  decoration: const ShapeDecoration(
-                    color: blueColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                      Radius.circular(4),
-                    )),
-                  ),
-                  child: const Text('LOGIN'),
-                ),
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              Flexible(
-                flex: 2,
-                child: Container(),
-              ),
-              // sign-up link
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: const Text("No account?"),
-                  ),
-                  const SizedBox(
-                    width: 14,
-                  ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: const Text(
-                        "Sign-up here!",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+              // ! TEST: REMOVE LATER
+              ElevatedButton(
+                  onPressed: () async {
+                    // ! asynchronous
+                    String res = await AuthMethods().signUpUser(
+                      email: _emailController.text,
+                      password: _passwordController.text,
+                      username: _usernameController.text,
+                      bio: _bioController.text,
+                    );
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    child: Text(
+                      'SIGNUP',
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                  ),
-                ],
+                  )),
+              // button login
+              // InkWell(
+              //   onTap: () async {
+              //     // ! asynchronous
+              //     String res = await AuthMethods().signUpUser(
+              //       email: _emailController.text,
+              //       password: _passwordController.text,
+              //       username: _usernameController.text,
+              //       bio: _bioController.text,
+              //     );
+              //   },
+              //   child: Container(
+              //     width: double.infinity,
+              //     alignment: Alignment.center,
+              //     padding: const EdgeInsets.symmetric(vertical: 12),
+              //     decoration: const ShapeDecoration(
+              //       color: blueColor,
+              //       shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.all(
+              //           Radius.circular(4),
+              //         ),
+              //       ),
+              //     ),
+              //     child: const Text('SIGNUP'),
+              //   ),
+              // ),
+              // const SizedBox(
+              //   height: 12,
+              // ),
+              Flexible(
+                flex: 4,
+                child: Container(),
               ),
             ],
           ),
