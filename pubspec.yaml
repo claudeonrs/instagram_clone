@@ -35,11 +35,6 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_svg: ^1.1.1+1
-<<<<<<< Updated upstream
-=======
-  image_picker: ^0.8.5+3
-  uuid: ^3.0.6
->>>>>>> Stashed changes
 
 dev_dependencies:
   flutter_lints: ^2.0.0
