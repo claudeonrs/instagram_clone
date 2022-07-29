@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:instagram_clone/utils/utils.dart';
 import 'package:instagram_clone/widgets/text_field_input.dart';
+import 'package:instagram_clone/resources/auth_methods.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -13,6 +15,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
 
   // clear the controllers as soon as the widgets got cleared
   @override
@@ -20,6 +23,23 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+  }
+
+  void loginUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthMethods().loginUser(
+        email: _emailController.text,
+        password: _passwordController.text); // get email & password in string
+    if (res != "success") {
+      showSnackBar(res, context);
+    } else {
+      // log in
+    }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -65,19 +85,25 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 24,
               ),
               // button login
-              InkWell(
+              ElevatedButton(
+                onPressed: loginUser,
                 child: Container(
                   width: double.infinity,
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   decoration: const ShapeDecoration(
-                    color: blueColor,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(
                       Radius.circular(4),
                     )),
                   ),
-                  child: const Text('LOGIN'),
+                  child: _isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: primaryColor,
+                          ),
+                        )
+                      : const Text('LOGIN'),
                 ),
               ),
               const SizedBox(

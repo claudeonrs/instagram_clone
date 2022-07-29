@@ -8,7 +8,9 @@ class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // method to sign up user
+  /*
+  Handles user sign-up process
+  */
   Future<String> signUpUser({
     required String email,
     required String password,
@@ -60,6 +62,28 @@ class AuthMethods {
     //     res = 'The email is wrongly formatted.';
     //   }
     // }
+    return res;
+  }
+
+  /*
+  Handles user login process
+  */
+  Future<String> loginUser({
+    required String email,
+    required String password,
+  }) async {
+    String res = "Error logging in!";
+    try {
+      if (email.isNotEmpty || password.isNotEmpty) {
+        await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
+        res = "Login successful";
+      } else {
+        res = "Email & Password field required!";
+      }
+    } catch (err) {
+      res = err.toString();
+    }
     return res;
   }
 }
