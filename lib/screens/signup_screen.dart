@@ -22,6 +22,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   Uint8List? _image;
+  bool _isLoading = false;
 
   // clear the controllers as soon as the widgets got cleared
   @override
@@ -40,6 +41,37 @@ class _SignupScreenState extends State<SignupScreen> {
         _image = im;
       },
     );
+  }
+
+  void signUpUser() async {
+    setState(() {
+      // tell user in the midst of signing-up!
+      _isLoading = true;
+    });
+
+    // ! asynchronous
+    String res = await AuthMethods().signUpUser(
+      email: _emailController.text,
+      password: _passwordController.text,
+      username: _usernameController.text,
+      bio: _bioController.text,
+      file: _image == null
+          ? (await rootBundle.load('assets/images/default_user.jpeg'))
+              .buffer
+              .asUint8List()
+          : _image!,
+    );
+
+    setState(() {
+      // done signing-up!
+      _isLoading = false;
+    });
+    if (res != 'success') {
+      // as defined in auth_methods.dart
+      showSnackBar(res, context);
+    } else {
+      // do nothing
+    }
   }
 
   @override
@@ -125,61 +157,25 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(
                 height: 24,
               ),
-              // ! TEST: REMOVE LATER
+
               ElevatedButton(
-                  onPressed: () async {
-                    // ! asynchronous
-                    String res = await AuthMethods().signUpUser(
-                      email: _emailController.text,
-                      password: _passwordController.text,
-                      username: _usernameController.text,
-                      bio: _bioController.text,
-                      file: _image == null
-                          ? (await rootBundle
-                                  .load('assets/images/default_user.jpeg'))
-                              .buffer
-                              .asUint8List()
-                          : _image!,
-                    );
-                  },
+                  // inkwell not suitable because applying color may cover the effects of inkwell
+                  onPressed: signUpUser,
                   child: Container(
                     width: double.infinity,
                     alignment: Alignment.center,
                     padding: const EdgeInsets.symmetric(vertical: 12),
-                    child: const Text(
-                      'SIGNUP',
-                      style: TextStyle(fontWeight: FontWeight.w400),
-                    ),
+                    child: _isLoading
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                              color: primaryColor,
+                            ),
+                          )
+                        : const Text(
+                            'SIGNUP',
+                            style: TextStyle(fontWeight: FontWeight.w400),
+                          ),
                   )),
-              // button login
-              // InkWell(
-              //   onTap: () async {
-              //     // ! asynchronous
-              //     String res = await AuthMethods().signUpUser(
-              //       email: _emailController.text,
-              //       password: _passwordController.text,
-              //       username: _usernameController.text,
-              //       bio: _bioController.text,
-              //     );
-              //   },
-              //   child: Container(
-              //     width: double.infinity,
-              //     alignment: Alignment.center,
-              //     padding: const EdgeInsets.symmetric(vertical: 12),
-              //     decoration: const ShapeDecoration(
-              //       color: blueColor,
-              //       shape: RoundedRectangleBorder(
-              //         borderRadius: BorderRadius.all(
-              //           Radius.circular(4),
-              //         ),
-              //       ),
-              //     ),
-              //     child: const Text('SIGNUP'),
-              //   ),
-              // ),
-              // const SizedBox(
-              //   height: 12,
-              // ),
               Flexible(
                 flex: 4,
                 child: Container(),

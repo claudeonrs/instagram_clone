@@ -1,4 +1,5 @@
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/material.dart';
 
 pickImage(ImageSource source) async {
   final ImagePicker _imagePicker = ImagePicker();
@@ -11,4 +12,15 @@ pickImage(ImageSource source) async {
     // because inaccessible on web
   }
   print('No image selected');
+}
+
+/*
+Show a snack bar / message to inform user of something
+*/
+showSnackBar(String content, BuildContext context) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(content),
+    ),
+  );
 }

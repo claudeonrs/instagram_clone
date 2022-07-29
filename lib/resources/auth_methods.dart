@@ -14,7 +14,8 @@ class AuthMethods {
     required String password,
     required String username, // stored in firestore database
     required String bio, // stored in firestore database
-    required Uint8List file, // a fixed-length list of 8-bit unsigned integers, for user image
+    required Uint8List
+        file, // a fixed-length list of 8-bit unsigned integers, for user image
   }) async {
     print('f');
     String res = "Some error occurred";
@@ -23,13 +24,11 @@ class AuthMethods {
           password.isNotEmpty ||
           username.isNotEmpty ||
           bio.isNotEmpty) {
-        
         //register user
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
-        print(cred.user!.uid);
+        print(cred.user!.uid); // WHAT IS THIS FOR???
 
-        // ! PROBLEMATIC
         String photoUrl = await StorageMethods()
             .uploadImageToStorage('profilePics', file, false);
 
@@ -50,12 +49,17 @@ class AuthMethods {
           'photoUrl': photoUrl,
         });
         res = "success";
-      } else {
-        res = "Please enter all the fields";
       }
     } catch (err) {
+      print("Something died!");
       res = err.toString();
     }
+    // if wish to customise error message from firebase,
+    // on FirebaseAuthException catch (err) {
+    //   if (err.code == 'invalid-email') {
+    //     res = 'The email is wrongly formatted.';
+    //   }
+    // }
     return res;
   }
 }
