@@ -50,6 +50,6 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Camera Usage</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Video Usage</string>
+	<string>Mic Usage</string>
 </dict>
 </plist>

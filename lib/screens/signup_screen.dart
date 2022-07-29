@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,6 +6,7 @@ import 'package:instagram_clone/resources/auth_methods.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/utils/utils.dart';
 import 'package:instagram_clone/widgets/text_field_input.dart';
+import 'package:flutter/services.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -75,10 +75,10 @@ class _SignupScreenState extends State<SignupScreen> {
                           radius: 64,
                           backgroundImage: MemoryImage(_image!),
                         )
-                      : CircleAvatar(
+                      : const CircleAvatar(
                           radius: 64,
-                          backgroundImage: NetworkImage(
-                              'https://i.pinimg.com/550x/18/b9/ff/18b9ffb2a8a791d50213a9d595c4dd52.jpg'),
+                          backgroundImage:
+                              AssetImage('assets/images/default_user.jpeg'),
                         ),
                   Positioned(
                     bottom: -10,
@@ -134,14 +134,19 @@ class _SignupScreenState extends State<SignupScreen> {
                       password: _passwordController.text,
                       username: _usernameController.text,
                       bio: _bioController.text,
-                      file: _image!,
+                      file: _image == null
+                          ? (await rootBundle
+                                  .load('assets/images/default_user.jpeg'))
+                              .buffer
+                              .asUint8List()
+                          : _image!,
                     );
                   },
                   child: Container(
                     width: double.infinity,
                     alignment: Alignment.center,
                     padding: const EdgeInsets.symmetric(vertical: 12),
-                    child: Text(
+                    child: const Text(
                       'SIGNUP',
                       style: TextStyle(fontWeight: FontWeight.w400),
                     ),

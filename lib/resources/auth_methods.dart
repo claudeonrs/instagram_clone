@@ -14,8 +14,7 @@ class AuthMethods {
     required String password,
     required String username, // stored in firestore database
     required String bio, // stored in firestore database
-    required Uint8List // a fixed-length list of 8-bit unsigned integers,
-        file, // * for user image
+    required Uint8List file, // a fixed-length list of 8-bit unsigned integers, for user image
   }) async {
     print('f');
     String res = "Some error occurred";
@@ -23,8 +22,8 @@ class AuthMethods {
       if (email.isNotEmpty ||
           password.isNotEmpty ||
           username.isNotEmpty ||
-          bio.isNotEmpty ||
-          file != null) {
+          bio.isNotEmpty) {
+        
         //register user
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
