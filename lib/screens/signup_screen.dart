@@ -6,6 +6,9 @@ import 'package:instagram_clone/resources/auth_methods.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/utils/utils.dart';
 import 'package:instagram_clone/widgets/text_field_input.dart';
+import 'package:instagram_clone/screens/login_screen.dart';
+import 'package:instagram_clone/responsive/responsive_layout_screen.dart';
+import 'package:instagram_clone/responsive/screens_layout/all.dart';
 import 'package:flutter/services.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -67,11 +70,25 @@ class _SignupScreenState extends State<SignupScreen> {
       _isLoading = false;
     });
     if (res != 'success') {
-      // as defined in auth_methods.dart
+      // "success" decided in auth_methods.dart
       showSnackBar(res, context);
     } else {
-      // do nothing
+      Navigator.of(context).push(
+        MaterialPageRoute(
+            builder: (context) => const ResponsiveLayout(
+                  mobileScreenLayout: MobileScreenLayout(),
+                  webScreenLayout: WebScreenLayout(),
+                )),
+      );
     }
+  }
+
+  /*
+  Brings user to sign up screen when clicked
+  */
+  void navigateToLogin() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 
   @override
@@ -172,13 +189,34 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                           )
                         : const Text(
-                            'SIGNUP',
+                            'SIGN UP',
                             style: TextStyle(fontWeight: FontWeight.w400),
                           ),
                   )),
               Flexible(
-                flex: 4,
+                flex: 2,
                 child: Container(),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: const Text("Already Have An Account?"),
+                  ),
+                  const SizedBox(width: 14),
+                  GestureDetector(
+                    onTap: navigateToLogin,
+                    child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: const Text(
+                          "Login Here!",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )),
+                  ),
+                ],
               ),
             ],
           ),
