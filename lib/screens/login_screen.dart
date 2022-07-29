@@ -5,6 +5,8 @@ import 'package:instagram_clone/utils/utils.dart';
 import 'package:instagram_clone/widgets/text_field_input.dart';
 import 'package:instagram_clone/resources/auth_methods.dart';
 import 'package:instagram_clone/screens/signup_screen.dart';
+import 'package:instagram_clone/responsive/responsive_layout_screen.dart';
+import 'package:instagram_clone/responsive/screens_layout/all.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -36,7 +38,13 @@ class _LoginScreenState extends State<LoginScreen> {
     if (res != "success") {
       showSnackBar(res, context);
     } else {
-      // log in
+      Navigator.of(context).push(
+        MaterialPageRoute(
+            builder: (context) => const ResponsiveLayout(
+                  mobileScreenLayout: MobileScreenLayout(),
+                  webScreenLayout: WebScreenLayout(),
+                )),
+      );
     }
     setState(() {
       _isLoading = false;

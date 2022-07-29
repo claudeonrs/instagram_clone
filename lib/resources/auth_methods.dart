@@ -53,7 +53,6 @@ class AuthMethods {
         res = "success";
       }
     } catch (err) {
-      print("Something died!");
       res = err.toString();
     }
     // if wish to customise error message from firebase,
@@ -82,6 +81,7 @@ class AuthMethods {
         res = "Email & Password field required!";
       }
     } catch (err) {
+      // similarly, can customise msg with on FirebaseAuthException
       res = err.toString();
     }
     return res;
