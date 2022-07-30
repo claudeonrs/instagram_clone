@@ -3,6 +3,8 @@ import 'dart:typed_data'; // for Uint8List
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'storage_methods.dart';
+import 'package:instagram_clone/models/user.dart'
+    as model; // avoid clash with User from firebase
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -34,22 +36,26 @@ class AuthMethods {
         String photoUrl = await StorageMethods()
             .uploadImageToStorage('profilePics', file, false);
 
+        model.User user = model.User(
+          username: username,
+          uid: cred.user!.uid,
+          email: email,
+          bio: bio,
+          followers: [],
+          following: [],
+          photoUrl: photoUrl,
+        );
+
         // add user to our database
         await _firestore
             .collection('users') // add to collection 'users'
             // create one if it doesn't alr exist
             .doc(cred.user!.uid) // ! exclamation mark bcuz user can be null
             // ! makes sure the doc name and uid are the same
-            .set({
-          // if the uid already exists, then it will overwrite the existing data
-          'username': username,
-          'uid': cred.user!.uid,
-          'email': email,
-          'bio': bio,
-          'followers': [],
-          'following': [],
-          'photoUrl': photoUrl,
-        });
+            // if the uid already exists, then it will overwrite the existing data
+            .set(
+              user.toJson(),
+            );
         res = "success";
       }
     } catch (err) {
