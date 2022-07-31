@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 /*
 Class contains details/data required of a User to be stored in firebase
 */
@@ -20,7 +22,9 @@ class User {
     required this.photoUrl,
   });
 
-  // whenever this method is called, converts & write all the data to an object file
+  /*
+  whenever this method is called, converts & write all the data to an object file
+  */
   Map<String, dynamic> toJson() => {
         "username": username,
         "uid": uid,
@@ -30,4 +34,21 @@ class User {
         "followers": followers,
         "following": following,
       };
+
+  /*
+  Get the data/value/text/display for the corresponding section
+  */
+  static User fromSnap(DocumentSnapshot snap) {
+    var snapShot = snap.data() as Map<String, dynamic>;
+
+    return User(
+      username: snapShot['username'],
+      uid: snapShot['uid'],
+      email: snapShot['email'],
+      photoUrl: snapShot['photoUrl'],
+      bio: snapShot['bio'],
+      followers: snapShot['followers'],
+      following: snapShot['following'],
+    );
+  }
 }

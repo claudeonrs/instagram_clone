@@ -4,9 +4,11 @@ import 'package:instagram_clone/responsive/responsive_layout_screen.dart';
 import 'package:instagram_clone/screens/login_screen.dart';
 import 'package:instagram_clone/screens/signup_screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
+import 'package:instagram_clone/providers/user_provider.dart';
 import 'package:instagram_clone/responsive/screens_layout/all.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,42 +35,49 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Deon's & Andre's IG Clone",
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: mobileBackgroundColor,
-      ),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => UserProvider(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: "Deon's & Andre's IG Clone",
+        theme: ThemeData.dark().copyWith(
+          scaffoldBackgroundColor: mobileBackgroundColor,
+        ),
 
-      // firebase methods:
-      // idTokenChanges() - runs whenever id token changes; if user reinstalls this app on a new device,
-      //                    this fn will run and will receive the authentication state back.
-      // userChanges() - runs whenever the user signs in/out; but if we update password/email,
-      //                  this gets called as well
-      // authStateCHanges() - only runs when the user signs in / out
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapShot) {
-          if (snapShot.connectionState == ConnectionState.active) {
-            if (snapShot.hasData) {
-              // has been authenticated, hence show responsive layout
-              return const ResponsiveLayout(
-                mobileScreenLayout: MobileScreenLayout(),
-                webScreenLayout: WebScreenLayout(),
+        // firebase methods:
+        // idTokenChanges() - runs whenever id token changes; if user reinstalls this app on a new device,
+        //                    this fn will run and will receive the authentication state back.
+        // userChanges() - runs whenever the user signs in/out; but if we update password/email,
+        //                  this gets called as well
+        // authStateCHanges() - only runs when the user signs in / out
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapShot) {
+            if (snapShot.connectionState == ConnectionState.active) {
+              if (snapShot.hasData) {
+                // has been authenticated, hence show responsive layout
+                return ResponsiveLayout(
+                  mobileScreenLayout: MobileScreenLayout(),
+                  webScreenLayout: WebScreenLayout(),
+                );
+              } else if (snapShot.hasError) {
+                return Center(child: Text('${snapShot.error}'));
+              }
+            } else if (snapShot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: primaryColor,
+                ),
               );
-            } else if (snapShot.hasError) {
-              return Center(child: Text('${snapShot.error}'));
             }
-          } else if (snapShot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: primaryColor,
-              ),
-            );
-          }
 
-          return const LoginScreen(); // snapShot has no data and did not raise error; user hasn't logged in yet
-        },
+            return const LoginScreen(); // snapShot has no data and did not raise error; user hasn't logged in yet
+          },
+        ),
       ),
     );
   }
