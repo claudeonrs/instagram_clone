@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
-import 'package:instagram_clone/models/user.dart' as model;
-import 'package:instagram_clone/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/utils/colors.dart';
+import 'package:instagram_clone/utils/global_variables.dart';
+
+import 'package:instagram_clone/models/user.dart' as model;
+import 'package:instagram_clone/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class MobileScreenLayout extends StatefulWidget {
@@ -47,13 +49,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
     //     .getUser; // avoid same class name clash with firebase User
     return Scaffold(
       body: PageView(
-        children: [
-          Text('feed'),
-          Text('search'),
-          Text('add post'),
-          Text('notifications'),
-          Text('profile'),
-        ],
+        children: homeScreenItems,
         physics:
             const NeverScrollableScrollPhysics(), // prevents scrolling between different tabs
         controller: pageController,
