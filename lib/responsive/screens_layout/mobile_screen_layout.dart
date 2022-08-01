@@ -14,9 +14,31 @@ class MobileScreenLayout extends StatefulWidget {
 
 class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   int _page = 0; // default page taken to be home page
+  late PageController pageController; // initialized later
 
+  @override
+  void initState() {
+    super.initState();
+    pageController = PageController();
+  }
+
+  void onPageChanged(int page) {
+    setState(() {
+      _page = page;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    pageController.dispose();
+  }
+
+  /*
+  Handles navigating to pages represented by icons
+  */
   void navigationTap(int page) {
-    // handles navigating to pages represented by icons
+    pageController.jumpToPage(page);
   }
 
   @override
@@ -24,8 +46,18 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
     // model.User user = Provider.of<UserProvider>(context)
     //     .getUser; // avoid same class name clash with firebase User
     return Scaffold(
-      body: Center(
-        child: Text('This is mobile'),
+      body: PageView(
+        children: [
+          Text('feed'),
+          Text('search'),
+          Text('add post'),
+          Text('notifications'),
+          Text('profile'),
+        ],
+        physics:
+            const NeverScrollableScrollPhysics(), // prevents scrolling between different tabs
+        controller: pageController,
+        onPageChanged: onPageChanged,
       ),
       bottomNavigationBar: CupertinoTabBar(
         backgroundColor: mobileBackgroundColor,
