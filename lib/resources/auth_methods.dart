@@ -34,7 +34,6 @@ class AuthMethods {
     required Uint8List
         file, // a fixed-length list of 8-bit unsigned integers, for user image
   }) async {
-    print('f');
     String res = "Some error occurred";
     try {
       if (email.isNotEmpty ||
