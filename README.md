@@ -1,16 +1,17 @@
-# instagram_clone
+# Instagram Clone
 
-A new Flutter project.
+This repository contains code for a responsive, albeit simplified, clone of the popular IG.
 
-## Getting Started
+## Frameworks
 
-This project is a starting point for a Flutter application.
+Front-end: Flutter
+Back-end: Firebase
 
-A few resources to get you started if this is your first Flutter project:
+## Features
+### Login page
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Sign-up page
+
+
+## Home page
